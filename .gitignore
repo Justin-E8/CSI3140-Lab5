@@ -1,0 +1,5 @@
+.env
+.DS_Store
+screenshots/
+report.pdf
+*.zip

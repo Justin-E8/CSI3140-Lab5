@@ -1,0 +1,38 @@
+services:
+  mariadb:
+    image: bitnamilegacy/mariadb:11.4
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MOODLE_DATABASE_NAME}
+      MARIADB_USER: ${MOODLE_DATABASE_USER}
+      MARIADB_PASSWORD: ${MOODLE_DATABASE_PASSWORD}
+    volumes:
+      - mariadb_data:/bitnami/mariadb
+
+  moodle:
+    image: bitnamilegacy/moodle:4.5
+    depends_on:
+      - mariadb
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    environment:
+      MOODLE_DATABASE_TYPE: mariadb
+      MOODLE_DATABASE_HOST: mariadb
+      MOODLE_DATABASE_PORT_NUMBER: "3306"
+      MOODLE_DATABASE_NAME: ${MOODLE_DATABASE_NAME}
+      MOODLE_DATABASE_USER: ${MOODLE_DATABASE_USER}
+      MOODLE_DATABASE_PASSWORD: ${MOODLE_DATABASE_PASSWORD}
+      MOODLE_USERNAME: ${MOODLE_ADMIN_USERNAME}
+      MOODLE_PASSWORD: ${MOODLE_ADMIN_PASSWORD}
+      MOODLE_EMAIL: ${MOODLE_ADMIN_EMAIL}
+      MOODLE_SITE_NAME: "CSI 3140 Lab 5 - Secure Course Hub"
+      LAB5_TEST_PASSWORD: ${LAB5_TEST_PASSWORD}
+    volumes:
+      - moodle_data:/bitnami/moodle
+      - moodledata:/bitnami/moodledata
+
+volumes:
+  mariadb_data:
+  moodle_data:
+  moodledata:
